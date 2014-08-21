@@ -23,7 +23,9 @@
     width: 100%;
     z-index: 99; 
 }
-
+.date{
+    font-size: 13px;
+}
 .top p{
     text-align: center;
     width: 90px;
