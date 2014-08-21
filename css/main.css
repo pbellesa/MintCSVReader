@@ -46,4 +46,9 @@ div.options *{
     height: 252px;
     display: block;
 }
+.options{
+
+   display: hidden;
+}
+}
 }
