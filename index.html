@@ -1,12 +1,13 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" ng-app="transactionList"> <!--<![endif]-->
+<!--[if gt IE 8]><!--> 
+<html class="no-js" ng-app="transactionList"> <!--<![endif]-->
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title></title>
+        <title>MintCSVReader</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -22,41 +23,54 @@
 
         <script src="js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
-    <body>
-    <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Project name</a>
-        </div>
-        <div class="navbar-collapse collapse">
-        </div><!--/.navbar-collapse -->
-      </div>
+    <body ng-controller="CSVController as csv">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container header">
+        <img class="brand" src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIj8+Cjxzdmcgd2lkdGg9IjMwMCIgaGVpZ2h0PSIzMDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiA8IS0tIENyZWF0ZWQgd2l0aCBNZXRob2QgRHJhdyAtIGh0dHA6Ly9naXRodWIuY29tL2R1b3BpeGVsL01ldGhvZC1EcmF3LyAtLT4KCiA8Zz4KICA8dGl0bGU+YmFja2dyb3VuZDwvdGl0bGU+CiAgPHJlY3QgZmlsbD0ibm9uZSIgaWQ9ImNhbnZhc19iYWNrZ3JvdW5kIiBoZWlnaHQ9IjMwMiIgd2lkdGg9IjMwMiIgeT0iLTEiIHg9Ii0xIi8+CiAgPGcgZGlzcGxheT0ibm9uZSIgb3ZlcmZsb3c9InZpc2libGUiIHk9IjAiIHg9IjAiIGhlaWdodD0iMTAwJSIgd2lkdGg9IjEwMCUiIGlkPSJjYW52YXNHcmlkIj4KICAgPHJlY3QgZmlsbD0idXJsKCNncmlkcGF0dGVybikiIHN0cm9rZS13aWR0aD0iMCIgeT0iMSIgeD0iMSIgaGVpZ2h0PSI0MDAiIHdpZHRoPSI1ODAiLz4KICA8L2c+CiA8L2c+CiA8Zz4KICA8dGl0bGU+TGF5ZXIgMTwvdGl0bGU+CiAgPHBhdGggc3Ryb2tlPSIjMDAwIiBpZD0ic3ZnXzEiIGQ9Im0xNTAuNzY1MTk4LDIuNTAwMDA0Yy04MS40NTk5MywwIC0xNDcuNSw2Ni4yNTg1NDEgLTE0Ny41LDE0Ny45OTk5ODFjMCw4MS43MzY3MjUgNjYuMDQwMDcsMTQ4LjAwMDAxNSAxNDcuNSwxNDguMDAwMDE1YzgxLjQ2MzM2NCwwIDE0Ny41LC02Ni4yNjMyOSAxNDcuNSwtMTQ4LjAwMDAxNWMwLC04MS43NDE0NCAtNjYuMDM2NjM2LC0xNDcuOTk5OTgxIC0xNDcuNSwtMTQ3Ljk5OTk4MXptMTIuNzM2ODYyLDIyOC4yMzk2MmwwLDIwLjg0NjIwN2wtMTkuODcwOTExLDBsMCwtMjAuNjExMzQzYy0zMi42MDczODQsLTQuNDgwNDk5IC00Ni44OTY0MzksLTMxLjM2MzQxOSAtNDYuODk2NDM5LC0zMS4zNjM0MTlsMjAuMzE3MjA3LC0xNy4wMzY1NzVjMCwwIDEyLjk1MzA4NywyMi42MzcyMzggMzYuMzk2MDgsMjIuNjM3MjM4YzEyLjk0NTg2MiwwIDIyLjc3Mjk4LC02Ljk1NTY0MyAyMi43NzI5OCwtMTguODI5NzQyYzAsLTI3Ljc4ODI4NCAtNzQuNTgxNjgsLTI0LjQxNjcwMiAtNzQuNTgxNjgsLTc1Ljk1MzI5M2MwLC0yMi40MDQ2MjUgMTcuNjM4MTUzLC0zOC41NDQ2NjIgNDEuOTgxNTUyLC00Mi4zNTIxNThsMCwtMjAuODQ0MTA1bDE5Ljg3NDE0NiwwbDAsMjAuODM1MDU2YzE2Ljk2ODEyNCwyLjI0MDI1IDM3LjA2MjExOSwxMS4yMDEyMSAzNy4wNjIxMTksMzAuNDc4MDI3bDAsMTQuNzg1MDA0bC0yNi4zNDg5MjMsMGwwLC03LjE3MDAxM2MwLC03LjM5MTUxIC05LjM4NDY0NCwtMTIuMzIxMjc0IC0xOS44Nzc5MywtMTIuMzIxMjc0Yy0xMy4zOTU5OTYsMCAtMjMuMjIzMjA2LDYuNzIwNjg4IC0yMy4yMjMyMDYsMTYuMTMwOTM2YzAsMjguNDUwMTA0IDc0LjU4NTM0MiwyMS41MDU5MDUgNzQuNTg1MzQyLDc1LjUwNjM0OGMwLjAxMDgwMywyMi4xODk4OCAtMTYuNTE0Njc5LDQxLjQ1Nzc3OSAtNDIuMTkwMzM4LDQ1LjI2MzEwN2wwLDB6IiBzdHJva2Utd2lkdGg9IjEuNSIgZmlsbD0iI0EwRDU4QSIvPgogPC9nPgo8L3N2Zz4=" alt="Alternate Text" />
+        <input type="file" ng-file-select multiple class="filestyle hidden" data-input="false" />
+        <button ng-click="csv.setResults()" class="btn btn-default">Display</button>
+             </div>
     </div>
-
+    
     <div class="container">
-      <div ng-controller="CSVController as csv">
-          <h1></h1>
-          <form class="form-inline">
-              <div class="form-group">
-                  <input type="file" ng-file-select multiple class="filestyle" data-input="false" />
-                  <button ng-click="csv.toObject()" class="btn btn-default">Send</button>
-              </div>
-          </form>
-          <!-- ACCORDION PANEL -->
-          <div id="accordion" ng-repeat="result in csv.results" class="panel-group">
+      <div>
+          <div class="jumbotron" ng-hide="debit">
+              <h1>Mint CSV Reader</h1>
+              <p>Use your exported transactions to view them outside of Mint.</p>
+              <p><a class="btn btn-primary btn-lg" role="button">Learn more</a></p>
+          </div>
+          <div class="top" ng-show="debit">
+              <br />
+              <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+                  <p class="alert alert-success">Credit<span class="badge">{{credit | currency}}</span></p>
+                  <p class="alert alert-danger">Debit<span class="badge">{{debit | currency}}</span></p>
+                  <p class="alert alert-warning">Balance<span class="badge">{{debit - credit | currency}}</span></p>
+              </div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <div class="options col-xs-10 col-sm-10 col-md-3 col-lg-3">
+                  <input type="text" name="description" value="" placeholder="Search by name..." class="form-control" ng-model="search.Description" />
+                  <select class="form-control" ng-model="search.Month" >
+                      <option value="" selected> -- Select Month --</option>
+                      <option ng-repeat="month in csv.months" value="{{month.Value}}">{{month.Name}}</option>
+                  </select>
+                  
+                  <div class="btn-group">
+                      <span class="btn btn-primary">All&nbsp;<input class="btn btn-primary" type="radio" value="" name="trans" checked ng-model="search['Transaction Type']" ng-value="''" /></span>
+                      <span class="btn btn-success">Credit&nbsp;<input class="btn btn-success" type="radio" value="" name="trans" checked ng-model="search['Transaction Type']" ng-value="'credit'" /></span>
+                      <span class="btn btn-danger">Debit&nbsp;<input class="btn btn-danger" type="radio" value="" name="trans" checked ng-model="search['Transaction Type']" ng-value="'debit'" /></span>
+                  </div>
+                  
+              </div>  
+          </div>
+          <span class="spacer"></span>
+              <!-- ACCORDION PANEL -->
+          <div id="accordion" ng-repeat="result in csv.results | filter:search" class="panel-group">
               <div class="panel" ng-class='csv.setRowClass(result["Transaction Type"])'>
                   <div class="panel-heading row">
                       <h4 class="panel-title ">
                           <a ng-click=""   href=""> 
-                              <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{{result.Date}}</span>
-                              <span class="col-xs-6 col-sm-7 col-md-7 col-lg-7">{{result.Description}}</span>
-                              <span class="col-xs-2 badge col-sm-1 col-md-1 col-lg-1">$&nbsp;{{result.Amount}}</span>
+                              <span class="col-xs-3 col-sm-3 col-md-3 col-lg-3">{{result.DateObj | date:'dd/MM/yyyy'}}</span>
+                              <span class="col-xs-6 col-sm-7 col-md-7 col-lg-7"><strong>{{result.Description}}</strong></span>
+                              <span class="col-xs-2 badge col-sm-1 col-md-1 col-lg-1">{{result.Amount | currency}}</span>
                           </a>
                       </h4>
                   </div>
@@ -74,13 +88,14 @@
       <hr>
 
       <footer>
-        <p>&copy; Company 2014</p>
+        <p>&copy; Pedro Bellesa  {{date | date:'yyyy'}}- All Rights Reserved</p>
       </footer> 
     </div> <!-- /container -->        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')</script>
         <script src="js/jquery.csv-0.71.min.js"></script>
         <script src="js/vendor/bootstrap.min.js"></script>
         <script src="js/bootstrap-filestyle.min.js"></script>
+       
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.18/angular.min.js"></script>
         <script src="js/main.js"></script>
     </body>
