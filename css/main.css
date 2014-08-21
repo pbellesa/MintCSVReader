@@ -43,12 +43,12 @@ div.options *{
 
 @media all and (max-width:1030px) {
     .spacer {
-    height: 252px;
+    height: 160px;
     display: block;
 }
 .options{
 
-   display: hidden;
+   display: none;
 }
 }
 }
